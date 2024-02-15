@@ -1,0 +1,151 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<math.h>
+#include<string.h>
+#define true 1
+#define false 0
+typedef struct thongtin
+{
+    char tensanpham[100];
+    unsigned int soluong;
+    double giaban;
+}Thongtin;
+typedef struct node
+{
+    Thongtin data;
+    struct node* next;
+}Node;
+typedef struct list
+{
+    Node* phead;
+    Node* ptail;
+}List;
+void taoDanhSach(List* l)
+{
+    l->phead=NULL;
+    l->ptail=NULL;
+}
+Node* capPhatNode()
+{
+    return (Node*)malloc(sizeof(Node));
+}
+Thongtin nhapdata()
+{
+    Thongtin tt;
+    gets(tt.tensanpham);
+    fflush(stdin);
+    scanf("%d",&tt.soluong);
+    scanf("%lf",&tt.giaban);
+    return tt;
+}
+Node* taoNode()
+{
+    Node* pNode=capPhatNode();
+    pNode->data=nhapdata();
+    pNode->next=NULL;
+    return pNode;
+}
+void themvaosau(List* l,Node* pNode)
+{
+    if(l->phead==NULL)
+    {
+        l->phead=l->ptail=pNode;
+    }
+    else
+    {
+        l->ptail->next=pNode;
+        l->ptail=pNode;
+    }
+}
+Node* timkiemtheoten(List* l,char* hoten)
+{
+    Node* i;
+    for(i=l->phead;i!=NULL;i=i->next)
+    {
+        if(strcmp(i->data.tensanpham,hoten)==0)
+        {
+            return i;
+        }
+    }
+    return NULL;
+}
+Node* timkiemtheotentruocno(List* l,char* hoten)
+{
+    Node* i;
+    for(i=l->phead;i!=NULL;i=i->next)
+    {
+        if(strcmp(i->(next)->data.tensanpham,hoten)==0)
+        {
+            return i;
+        }
+    }
+    return NULL;
+}
+void xoatheoten(List* l, char* hoten)
+{
+    Node* pNode=timkiemtheoten(l,hoten);
+    Node* qNode=timkiemtheotentruocno(l,hoten);
+    if(pNode==NULL)
+    {
+        printf("san pham khong co trong danh sach\n");
+        return ;
+    }
+    else
+    {
+        if(pNode==l->phead)
+        {
+            l->phead=pNode->next;
+        }
+        else
+        {
+            qNode->next=pNode->next;
+        }
+    }
+}
+void suathongtin(List* l,char* hoten)
+{
+    Node* pNode=timkiemtheoten(l,hoten);
+    if(pNode==NULL)
+    {
+        printf("san pham khong co tring danh sach\n");
+        return ;
+    }
+    else
+    {
+       pNode->data=nhapdata();
+    }
+}
+
+void inDs(List l)
+{
+    Node* i;
+    for(i=l.phead;i!=NULL;i=i->next)
+    {
+      printf("%20s%20s%20s\n",i.tensanpham,i.soluong,i.giaban);
+    }
+}
+int main()
+{
+    List l;
+    taoDanhSach(&l);
+    int sothaotac,thaotac;
+    printf("so thao tac: ");scanf("%d",&sothaotac);
+    for(int i=0;i<sothaotac;i++)
+    {
+        scanf("%d",&thaotac);
+        if(thaotac==1)
+        {
+            Node* pNode=taoNode();
+            Node* qNode=timkiemtheoten(&l,pNode->data.tensanpham)
+            if(qNode!=NULL)
+            {
+                qNode->data.soluong+=1;
+            }
+            else
+            {
+                themvaosau()
+            }
+        }
+    }
+    return 0;
+}

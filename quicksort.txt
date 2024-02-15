@@ -1,0 +1,62 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+void hoanVi(int *a,int* b)
+{
+    int tmp=*a;
+        *a=*b;
+        *b=tmp;
+}
+void nhapMang(int a[],int n)
+{
+    for(int i=1;i<=n;i++)
+    {
+        scanf("%d",&a[i]);
+    }
+}
+void inMang(int a[],int n)
+{
+    for(int i=1;i<=n;i++)
+    {
+        printf("%4d",a[i]);
+    }
+}
+void quickSort(int a[],int left,int right)
+{
+    if(left>=right)// 1 or 0 phan tu
+    {
+        return ;
+    }
+    else if(left+1==right)//2 phan tu
+    {
+        if(a[left]>a[right])
+        {
+            hoanVi(&a[left],&a[right]);
+        }
+
+    }
+    else
+    {
+        int chot=a[right];
+        int L=left-1;
+        for(int j=left;j<right;j++)
+        {
+            if(a[j]<=chot)
+            {
+                L++;
+                hoanVi(&a[L],&a[j]);
+            }
+        }
+        hoanVi(&a[L+1],&a[right]);
+        quickSort(a,left,L);
+        quickSort(a,L+2,right);
+    }
+}
+int main()
+{
+    int a[100],n;
+    scanf("%d",&n);
+    nhapMang(a,n);
+    quickSort(a,1,n);
+    inMang(a,n);
+}

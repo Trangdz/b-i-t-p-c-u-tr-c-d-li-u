@@ -1,0 +1,34 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+typedef struct 
+{
+    char hoTen[30];
+    int tuoi;
+    float diemTB;
+} SinhVien;
+typedef struct node
+{
+    SinhVien data;
+    struct node* next;
+    struct node* previous;
+} Node;
+Node* first=NULL;
+Node* last =NULL;
+SinhVien nhapThongTin()
+{
+    SinhVien sv;
+    printf("\tHo Ten: ");
+    fflush(stdin);
+    gets(sv.hoTen);
+    printf("\tNhap tuoi: ");
+    fflush(stdin);
+    scanf("%d",&sv.tuoi);
+    printf("\tNhap diem: ");
+    scanf("%f",&sv.diemTB);
+    return 
+}
+int main()
+ 
+
+

@@ -1,0 +1,262 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+typedef struct sinhvien
+{
+    char hoTen[30];
+    int tuoi;
+    float diemTB;
+} sinhvien;
+typedef struct node
+{
+    sinhvien data;
+    struct node* next;
+    struct node* previous;
+} Node;
+Node* first=NULL;
+Node* last =NULL;
+Node* capPhatNode()
+{
+  Node* pNode=(Node*)malloc(sizeof(Node));
+  if(pNode==NULL)
+  {
+      printf("Cap phat loi\n");
+      exit(0);
+  }
+  return pNode;
+}
+sinhvien nhapThongTin()
+{
+    sinhvien sv;
+    fflush(stdin);
+    printf("\tNhap Ten: ");gets(sv.hoTen);
+    fflush(stdin);
+    printf("\tNhap Tuoi: ");scanf("%d",&sv.tuoi);
+    printf("\tNhap diem trung binh\n");scanf("%f",&sv.diemTB);
+    return sv;
+}
+Node* taoNode()
+{
+    Node* pNode=capPhatNode();
+    pNode->data=nhapThongTin();
+    pNode->next=NULL;
+    pNode->previous=NULL;
+    return pNode;
+}
+void themNodeVaoCuoi(Node* pNode)
+{
+    if(first==NULL)
+    {
+        first=last=pNode;
+    }
+    else
+    {
+        last->next=pNode;
+        pNode->previous=last;
+        last=pNode;
+    }
+}
+Node* timNodeTheoTen(char* tencantim)
+{
+    for(Node* i=first;i!=NULL;i=i->next)
+    {
+        if(strcmp(i->data.hoTen,tencantim)==0)
+            return i;
+    }
+    return NULL;
+}
+void suaNode(Node* pNode)
+{
+    pNode->data=nhapThongTin();
+}
+void chenqNodeSaupNode(Node* qNode,Node* pNode)
+{
+    if(qNode==NULL||pNode==NULL)
+    {
+        return ;
+    }
+    else if(first==NULL)
+    {
+            themNodeVaoCuoi(qNode);
+
+    }
+    else
+    {
+        qNode->next=pNode->next;
+        qNode->previous=pNode->previous;
+        pNode->next=qNode;
+        qNode->previous=pNode;
+    }
+
+}
+/*void xoaNode(Node* pNode)
+{
+    if(first==pNode)
+    {
+        if(last==pNode)
+        {
+            first=first->next;
+            last=NULL;
+            free(pNode);
+        }
+        else
+        {
+            first=first->next;
+            first->previous=NULL;
+            (first->next)->previous=first;
+            free(pNode);
+        }
+    }
+    if(last==pNode&&first!=pNode)
+    {
+        (last->previous)->next=NULL;
+        last=last->previous;
+        free(pNode);
+    }
+    pNode->previous->next=pNode->next;
+    pNode->next->previous=pNode->previous;
+    free(pNode);
+
+}*/
+void xoaNode(Node* pNode)
+{
+    if (pNode == NULL)
+        return;
+    if (pNode == first)
+    {
+        if (last==first)
+            last = NULL;
+        first = first->next;
+        if (first!=NULL)
+            first->previous = NULL;
+        free(pNode);
+        return;
+    }
+    if (pNode == last)
+    {
+        last = pNode->previous;
+        last->next = NULL;
+        free (pNode);
+        return;
+    }
+
+    pNode->previous->next = pNode->next;
+    pNode->next->previous = pNode->previous;
+    free(pNode);
+
+}
+void hienThiMotSinhVien(sinhvien sv)
+{
+    printf("%20s%6d%8.2f\n",sv.hoTen,sv.tuoi,sv.diemTB);
+}
+
+void hienThiDanhSach()
+{
+    int stt = 1;
+    printf("\t%5s%20s%6s%8s\n","STT","Ho ten", "Tuoi", "DiemTB");
+    for (Node* i = first; i!= NULL ; i=i->next)
+    {
+        printf("\t%5d",stt++);
+        hienThiMotSinhVien(i->data);
+    }
+}
+void menu()
+{
+    printf("\t\tMENU\n");
+    printf("\t1. Tao DSSV\n");
+    printf("\t2. Hien thi DSSV\n");
+    printf("\t3. Chen sinh vien sau sinh vien khac theo ten\n");
+    printf("\t4. Xoa sinh vien theo ten\n");
+    printf("\t0. Thoat\n");
+    printf("\t\tVui long chon: ");
+}
+int main()
+{
+    while(1==1)
+    {
+        menu();
+        int chon;
+        scanf("%d",&chon);
+        system("cls");
+        if(chon==1)
+        {
+            int n;
+            printf("\t\tNhap so luong sinh vien: ");scanf("%d",&n);
+            for(int i=0;i<n;i++)
+            {
+                themNodeVaoCuoi(taoNode());
+            }
+            printf("Them thanh cong!\n");
+        }
+        else if(chon==2)
+        {
+            hienThiDanhSach();
+        }
+        else if(chon==3)
+        {
+            char chensauten[30];
+            printf("Chen sau Ten: ");
+            fflush(stdin);
+            gets(chensauten);
+
+            if(timNodeTheoTen(chensauten)==NULL)
+            {
+                printf("Khong tim thay!\n");
+
+            }
+            else
+            {
+                printf("ten Can Chen: ");
+                chenqNodeSaupNode(taoNode(),timNodeTheoTen(chensauten));
+                printf("Chen Thanh Cong!\n");
+            }
+        }
+        else if(chon==4)
+        {
+           /* printf("NHap Ten can xoa: ");
+            char tencanxoa[20];
+
+            fflusḥ̣̣(stdin);
+            gets(tencanxoa);
+            Node* qNode=timNodeTheoTen(tencanxoa);
+            if(qNode==NULL)
+
+                printf("khong tim thay\n");
+
+
+            else
+            {
+                xoaNode(qNode);
+                printf("xoa thanh cong!");
+            }*/
+                printf("\tNhap ten sinh vien muon xoa: ");
+                char hoTenSV[20];
+                fflush(stdin);
+                gets(hoTenSV);
+                Node* qNode = timNodeTheoTen(hoTenSV);
+                if (qNode==NULL)
+                    printf("\tKhong tim thay sinh vien ten %s\n",hoTenSV);
+                else
+                {
+                    xoaNode(qNode);
+                    printf("ban da xoa thanh cong");
+                }
+        }
+        else if(chon==0)
+        {
+            printf("\t\t------BYE-----\n");
+            exit(0);
+        }
+        else
+        {
+            printf("vui long chon 0-4\n");
+            system("cls");
+            printf("Nhap bat ki de tro ve menu: ");
+            getch();
+            system("cls");
+
+
+        }
+    }
+}
+
